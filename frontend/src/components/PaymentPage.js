@@ -43,7 +43,7 @@ function PaymentPage() {
     try {
       setLoading(true);
       
-      // Format amount to the smallest currency unit (kobo for NGN, cents for USD)
+      // Format amount to the smallest currency unit (kobo for NGN)
       // Paystack expects amount in kobo (1 Naira = 100 kobo)
       const amount = orderDetails.totalAmount;
        amount      
@@ -51,7 +51,7 @@ function PaymentPage() {
       const response = await axios.post('http://localhost:3001/api/payment/initialize', {
         orderId: orderDetails.orderId,
         amount: amount,
-        email: 'customer@example.com', // You can make this dynamic
+        email: 'Customers@gmail.com', 
         callbackUrl: `${window.location.origin}/chat?payment=success&orderId=${orderDetails.orderId}`
       });
 
