@@ -1,0 +1,24 @@
+{
+    "name": "restaurant-chatbot-backend",
+    "version": "1.0.0",
+    "description": "Backend for Restaurant Chatbot",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "prisma:generate": "prisma generate",
+        "prisma:push": "prisma db push"
+    },
+    "dependencies": {
+        "@prisma/client": "^5.1.1",
+        "axios": "^1.8.4",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "mongodb": "^6.15.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.9",
+        "prisma": "^5.1.1"
+    }
+}

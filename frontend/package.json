@@ -1,0 +1,35 @@
+{
+    "name": "restaurant-chatbot-frontend",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+        "@babel/runtime": "^7.27.0",
+        "@paystack/inline-js": "^2.22.3",
+        "@svgr/webpack": "^8.1.0",
+        "axios": "^1.5.0",
+        "lucide-react": "^0.501.0",
+        "nth-check": "^2.1.1",
+        "postcss": "^8.5.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.22.3",
+        "react-scripts": "^5.0.1",
+        "resolve-url-loader": "^5.0.0"
+    },
+    "scripts": {
+        "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+        "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
