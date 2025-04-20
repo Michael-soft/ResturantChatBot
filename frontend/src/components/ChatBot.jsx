@@ -14,7 +14,7 @@ const ChatBot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const chatWindowRef = useRef(null);
 
-  // ✅ Fetch initial chat options
+  //  Fetch initial chat options
   useEffect(() => {
     axios.post('http://localhost:3001/api/chat', { deviceId, message: '' })
       .then(response => addMessage('bot', response.data.response))
@@ -24,12 +24,12 @@ const ChatBot = () => {
       });
   }, [deviceId]);
 
-  // ✅ Scroll chat to bottom on new messages
+  // Scroll chat to bottom on new messages
   useEffect(() => {
     chatWindowRef.current?.scrollTo(0, chatWindowRef.current.scrollHeight);
   }, [messages]);
 
-  // ✅ Handle Paystack redirect verification
+  //  Handle Paystack redirect verification
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const reference = params.get('reference');
@@ -37,10 +37,10 @@ const ChatBot = () => {
     if (reference) {
       axios.get(`http://localhost:3001/payment/verify?reference=${reference}`)
         .then(() => {
-          addMessage('bot', '✅ Payment successful! Thank you for your order.');
+          addMessage('bot', 'Payment successful! Thank you for your order.');
         })
         .catch(() => {
-          addMessage('bot', '⚠️ Payment verification failed. Please contact support.');
+          addMessage('bot', 'Payment verification failed. Please contact support.');
         })
         .finally(() => {
           window.history.replaceState({}, document.title, window.location.pathname);
@@ -48,12 +48,12 @@ const ChatBot = () => {
     }
   }, []);
 
-  // ✅ Add chat message
+  // Add chat message
   const addMessage = (sender, text) => {
     setMessages(prev => [...prev, { sender, text }]);
   };
 
-  // ✅ Handle message send
+  // Handle message send
   const handleSend = async (optionValue = null) => {
     const message = optionValue ?? userInput.trim();
     if (!message) {

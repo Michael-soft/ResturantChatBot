@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import ChatBot from './components/ChatBot';
 import PaymentPage from './components/PaymentPage';
+import PaymentSuccess  from './components/PaymentSuccess';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           } />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment/verify" element={<ChatBot />} />
+          <Route path="/payment-success" element={<PaymentSuccess/>} />
         </Routes>
       </div>
     </Router>

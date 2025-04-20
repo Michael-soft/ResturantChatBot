@@ -102,7 +102,7 @@ const verifyPayment = async (req, res) => {
     if (status === 'success') {
       const { orderId } = metadata;
 
-      // Update order status in database
+      // Update order in DB
       await prisma.order.update({
         where: { id: orderId },
         data: {
@@ -113,25 +113,18 @@ const verifyPayment = async (req, res) => {
         }
       });
 
-      // 👉 This part is useful if you're redirecting from the browser/chatbot:
-      return res.status(200).json({
-        message: '✅ Payment verified successfully',
-        data: {
-          orderId,
-          amount: amount / 100,
-          reference
-        }
-      });
+      // Redirect user to success page with query params
+      return res.redirect(`${process.env.PAYMENT_SUCCESS_REDIRECT_URL}?status=success&orderId=${orderId}&amount=${amount / 100}`);
     } else {
       return res.status(400).json({
-        error: '⚠️ Payment not successful',
+        error: 'Payment not successful',
         details: response.data.message
       });
     }
   } catch (error) {
     console.error('Payment verification error:', error);
     return res.status(500).json({
-      error: '❌ Failed to verify payment',
+      error: 'Failed to verify payment',
       details: error.response?.data?.message || error.message
     });
   }

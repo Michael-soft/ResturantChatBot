@@ -238,7 +238,7 @@ function ChatBot() {
       
       // Add simulated response
       setMessages([...newMessages, { 
-        text: simulatedResponse + '\n\n⚠️ Note: Backend connection failed. This is a simulated response.', 
+        text: simulatedResponse + '\n\n Note: Backend connection failed. This is a simulated response.', 
         sender: 'bot' 
       }]);
     } finally {
