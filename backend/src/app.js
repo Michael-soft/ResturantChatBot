@@ -10,7 +10,11 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+  origin: "https://resturantchatbot-aoes.onrender.com/", 
+  credentials: true,
+}));
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
