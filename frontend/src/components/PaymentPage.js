@@ -46,8 +46,8 @@ function PaymentPage() {
       setLoading(true);
       
       // Format amount to the smallest currency unit (kobo for NGN)
-      const amount = orderDetails.totalAmount * 100; // Convert Naira to Kobo
-      
+      const amount = orderDetails.totalAmount;
+      amount
       // Initialize payment with Paystack
       const response = await axios.post(`${BACKEND_URL}/api/payment/initialize`, {
         orderId: orderDetails.orderId,
