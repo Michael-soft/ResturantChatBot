@@ -55,7 +55,7 @@ function ChatBot() {
       // Verify the payment with the backend
       const verifyPayment = async () => {
         try {
-          const response = await axios.get(`https://chatbotbackend-d5sx.onrender.com/api/payment/verify?reference=${reference}`);
+          const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/payment/verify?reference=${reference}`);
           
           if (response.data.status === 'success') {
             setMessages(prev => [...prev, { 
@@ -85,7 +85,7 @@ function ChatBot() {
     setIsLoading(true);
     setConnectionError(false);
     try {
-      const response = await axios.post('https://chatbotbackend-d5sx.onrender.com/api/chat', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
         deviceId: id,
         message: 'start'
       });
@@ -146,7 +146,7 @@ function ChatBot() {
         }
 
         // Send scheduling request to backend
-        const response = await axios.post('https://chatbotbackend-d5sx.onrender.com/api/chat', {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
           deviceId: deviceId,
           message: `schedule ${inputText.trim()}`
         });
@@ -184,7 +184,7 @@ function ChatBot() {
       }
 
       // If not a payment selection or scheduling, proceed with normal chat flow
-      const response = await axios.post('https://chatbotbackend-d5sx.onrender.com/api/chat', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
         deviceId: deviceId,
         message: inputText
       });
