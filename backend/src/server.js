@@ -1,6 +1,12 @@
-const app = require('./app');
+const express = require('express');
+const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Default route to handle "/"
+app.get('/', (req, res) => {
+    res.send('Backend is running!');
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
