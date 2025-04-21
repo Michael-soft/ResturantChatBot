@@ -48,7 +48,7 @@ function PaymentPage() {
       const amount = orderDetails.totalAmount;
        amount      
       // Initialize payment with Paystack
-      const response = await axios.post('http://localhost:3001/api/payment/initialize', {
+      const response = await axios.post('https://chatbotbackend-d5sx.onrender.com/api/payment/initialize', {
         orderId: orderDetails.orderId,
         amount: amount,
         email: 'Customers@gmail.com', 

@@ -16,7 +16,7 @@ const ChatBot = () => {
 
   //  Fetch initial chat options
   useEffect(() => {
-    axios.post('http://localhost:3001/api/chat', { deviceId, message: '' })
+    axios.post('https://chatbotbackend-d5sx.onrender.com/api/chat', { deviceId, message: '' })
       .then(response => addMessage('bot', response.data.response))
       .catch(error => {
         console.error(error);
@@ -35,7 +35,7 @@ const ChatBot = () => {
     const reference = params.get('reference');
 
     if (reference) {
-      axios.get(`http://localhost:3001/payment/verify?reference=${reference}`)
+      axios.get(`https://chatbotbackend-d5sx.onrender.com/payment/verify?reference=${reference}`)
         .then(() => {
           addMessage('bot', 'Payment successful! Thank you for your order.');
         })
@@ -71,7 +71,7 @@ const ChatBot = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/api/order', requestBody);
+      const response = await axios.post('https://chatbotbackend-d5sx.onrender.com/api/order', requestBody);
       addMessage('bot', response.data.response);
     } catch (error) {
       console.error(error);

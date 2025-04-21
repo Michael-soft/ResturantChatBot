@@ -11,7 +11,6 @@ const PaymentSuccess = () => {
   useEffect(() => {
     console.log('Payment success', { orderId, amount, reference });
   }, [orderId, amount, reference]);
-
   return (
     <div style={{ padding: 20, textAlign: 'center' }}>
       <h1> Payment Successful!</h1>
