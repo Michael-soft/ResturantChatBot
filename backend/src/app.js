@@ -11,7 +11,7 @@ const app = express();
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: "https://resturantchatbot-aoes.onrender.com/", 
+  origin: "https://resturantchatbot-aoes.onrender.com", 
   credentials: true,
 }));
 
