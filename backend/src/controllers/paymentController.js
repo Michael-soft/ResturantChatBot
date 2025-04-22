@@ -112,7 +112,6 @@ const verifyPayment = async (req, res) => {
           paidAt: new Date()
         }
       });
-
       // Redirect user to success page with query params
       return res.redirect(`${process.env.PAYMENT_SUCCESS_REDIRECT_URL}?status=success&orderId=${orderId}&amount=${amount / 100}`);
     } else {
