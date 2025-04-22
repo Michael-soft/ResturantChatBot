@@ -29,6 +29,11 @@ app.use('/payment', paymentRoutes);
 // Serve static files from the build directory
 app.use(express.static(path.join(__dirname, 'build')));
 
+// Handle all other routes by serving React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
