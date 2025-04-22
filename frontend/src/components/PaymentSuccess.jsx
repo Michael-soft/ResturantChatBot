@@ -22,8 +22,6 @@ const PaymentSuccess = () => {
 export default PaymentSuccess;
 
 
-
-
 // import { useEffect } from 'react';
 // import { useLocation } from 'react-router-dom';
 
