@@ -37,15 +37,19 @@ const ChatBot = () => {
 
     if (reference) {
       axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`)
-        .then((response) => {
-          const { message, orderId, reference, amount } = response.data;
-          addMessage('bot', `${message} Order ID: ${orderId}, Amount: ₦${amount}, Reference: ${reference}. Redirecting to homepage...`);
+        .then(() => {
+          // Display a user-friendly success message
+          addMessage('bot', 'Payment verified successfully! Redirecting to homepage...');
+          
+          // Redirect to the chatbot homepage after a short delay
           setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
         })
         .catch(() => {
+          // Display an error message in case of failure
           addMessage('bot', 'Payment verification failed. Please contact support.');
         })
         .finally(() => {
+          // Clean URL by removing query parameters
           window.history.replaceState({}, document.title, window.location.pathname);
         });
     }
