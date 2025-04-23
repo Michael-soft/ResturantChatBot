@@ -112,8 +112,13 @@ const verifyPayment = async (req, res) => {
           paidAt: new Date()
         }
       });
-      // Redirect user to success page with query params
-      return res.redirect(`${process.env.PAYMENT_SUCCESS_REDIRECT_URL}?status=success&orderId=${orderId}&amount=${amount / 100}`);
+      // send json back to frontend 
+      return res.json({
+        message: 'Payment verified successfully',
+        orderId,
+        reference,
+        amount: amount/ 100
+      });
     } else {
       return res.status(400).json({
         error: 'Payment not successful',
