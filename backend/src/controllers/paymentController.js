@@ -114,6 +114,7 @@ const verifyPayment = async (req, res) => {
       });
       // send back to frontend 
       return res.json({
+        success: true,
         message: 'Payment verified successfully'
       });
     } else {
