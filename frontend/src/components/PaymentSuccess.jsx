@@ -16,7 +16,7 @@ const PaymentSuccess = () => {
         const data = await res.json();
 
         if (res.ok) {
-          //  Notify the user (you can use toast instead)
+          //  Notify the user 
           alert('Payment Successful!');
 
           //  Redirect back to ChatBot

@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { SendHorizonal } from 'lucide-react';
 
 const ChatBot = () => {
@@ -36,23 +36,28 @@ const ChatBot = () => {
     const reference = params.get('reference');
 
     if (reference) {
-      axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`)
-        .then((res) => {
-          if (res.data.success) {
-            addMessage('bot', 'Payment verified successfully! Redirecting to homepage...');
-            setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
-          }else{
-            addMessage('bot', 'Payment verification failed. Please contact support.');
+      const verifyPayment = async () => {
+        try {
+          const res = await axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`);
+          if (res.data?.success) {
+            addMessage('bot', '✅ Payment verified successfully! Redirecting to homepage...');
+            setTimeout(() => {
+              navigate('/'); // Update this if your home route is different
+            }, 3000);
+          } else {
+            addMessage('bot', '⚠️ Payment verification failed. Please contact support.');
           }
-        })
-        .catch(() => {
-          // Display an error message in case of failure
-          addMessage('bot', 'Payment verification failed. Please contact support.');
-        })
-        .finally(() => {
-          // Clean URL by removing query parameters
-          window.history.replaceState({}, document.title, window.location.pathname);
-        });
+        } catch (error) {
+          console.error(error);
+          addMessage('bot', '❌ Error verifying payment. Please try again later.');
+        } finally {
+          const cleanURL = new URL(window.location);
+          cleanURL.searchParams.delete('reference');
+          window.history.replaceState({}, document.title, cleanURL.pathname);
+        }
+      };
+
+      verifyPayment();
     }
   }, [BACKEND_URL, navigate]);
 
@@ -62,9 +67,8 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     const message = userInput.trim();
-    if (!message) {
-      return;
-    }
+    if (!message) return;
+
     addMessage('user', message);
     setUserInput('');
     setIsTyping(true);
@@ -90,17 +94,142 @@ const ChatBot = () => {
         ))}
         {isTyping && <div className="typing-indicator">Chatbot is typing...</div>}
       </div>
-      <input 
-        value={userInput} 
-        onChange={(e) => setUserInput(e.target.value)} 
-        placeholder="Type a message..." 
-      />
-      <button onClick={handleSend}>Send</button>
+
+      <div className="chatbot-input" style={{ display: 'flex', marginTop: '10px' }}>
+        <input
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="Type a message..."
+          style={{
+            flex: 1,
+            padding: '10px 12px',
+            borderRadius: '20px',
+            border: '1px solid #ccc'
+          }}
+        />
+        <button
+          onClick={handleSend}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            marginLeft: '10px',
+            cursor: 'pointer',
+            color: '#007bff'
+          }}
+        >
+          <SendHorizonal size={24} />
+        </button>
+      </div>
     </div>
   );
 };
 
 export default ChatBot;
+
+
+// import { useNavigate } from 'react-router-dom';
+// import React, { useState, useEffect, useRef } from 'react';
+// import axios from 'axios';
+// import { SendHorizonal } from 'lucide-react';
+
+// const ChatBot = () => {
+//   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+//   const navigate = useNavigate();
+
+//   const [deviceId] = useState(() => {
+//     const id = localStorage.getItem('deviceId') || Math.random().toString(36).substring(2);
+//     localStorage.setItem('deviceId', id);
+//     return id;
+//   });
+
+//   const [messages, setMessages] = useState([]);
+//   const [userInput, setUserInput] = useState('');
+//   const [isTyping, setIsTyping] = useState(false);
+//   const chatWindowRef = useRef(null);
+
+//   useEffect(() => {
+//     axios.post(`${BACKEND_URL}/api/chat`, { deviceId, message: '' })
+//       .then(response => addMessage('bot', response.data.response))
+//       .catch(error => {
+//         console.error(error);
+//         addMessage('bot', 'Error fetching chat options.');
+//       });
+//   }, [deviceId, BACKEND_URL]);
+
+//   useEffect(() => {
+//     chatWindowRef.current?.scrollTo(0, chatWindowRef.current.scrollHeight);
+//   }, [messages]);
+
+//   useEffect(() => {
+//     const params = new URLSearchParams(window.location.search);
+//     const reference = params.get('reference');
+
+//     if (reference) {
+//       axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`)
+//         .then((res) => {
+//           if (res.data.success) {
+//             addMessage('bot', 'Payment verified successfully! Redirecting to homepage...');
+//             setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
+//           }else{
+//             addMessage('bot', 'Payment verification failed. Please contact support.');
+//           }
+//         })
+//         .catch(() => {
+//           // Display an error message in case of failure
+//           addMessage('bot', 'Payment verification failed. Please contact support.');
+//         })
+//         .finally(() => {
+//           // Clean URL by removing query parameters
+//           window.history.replaceState({}, document.title, window.location.pathname);
+//         });
+//     }
+//   }, [BACKEND_URL, navigate]);
+
+//   const addMessage = (sender, text) => {
+//     setMessages(prev => [...prev, { sender, text }]);
+//   };
+
+//   const handleSend = async () => {
+//     const message = userInput.trim();
+//     if (!message) {
+//       return;
+//     }
+//     addMessage('user', message);
+//     setUserInput('');
+//     setIsTyping(true);
+
+//     try {
+//       const response = await axios.post(`${BACKEND_URL}/api/order`, { deviceId, message });
+//       addMessage('bot', response.data.response);
+//     } catch (error) {
+//       console.error(error);
+//       addMessage('bot', 'There was an error processing your request.');
+//     } finally {
+//       setIsTyping(false);
+//     }
+//   };
+
+//   return (
+//     <div className="chatbot-container">
+//       <div className="chatbot-window" ref={chatWindowRef}>
+//         {messages.map((msg, index) => (
+//           <div key={index} className={`message ${msg.sender}`}>
+//             {msg.text}
+//           </div>
+//         ))}
+//         {isTyping && <div className="typing-indicator">Chatbot is typing...</div>}
+//       </div>
+//       <input 
+//         value={userInput} 
+//         onChange={(e) => setUserInput(e.target.value)} 
+//         placeholder="Type a message..." 
+//       />
+//       <button onClick={handleSend}>Send</button>
+//     </div>
+//   );
+// };
+
+// export default ChatBot;
 
 
 
