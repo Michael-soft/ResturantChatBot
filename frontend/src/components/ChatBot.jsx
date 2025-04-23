@@ -40,7 +40,6 @@ const ChatBot = () => {
         .then(() => {
           // Display a user-friendly success message
           addMessage('bot', 'Payment verified successfully! Redirecting to homepage...');
-          
           // Redirect to the chatbot homepage after a short delay
           setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
         })
