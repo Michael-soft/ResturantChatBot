@@ -112,12 +112,9 @@ const verifyPayment = async (req, res) => {
           paidAt: new Date()
         }
       });
-      // send json back to frontend 
+      // send back to frontend 
       return res.json({
-        message: 'Payment verified successfully',
-        orderId,
-        reference,
-        amount: amount/ 100
+        message: 'Payment verified successfully'
       });
     } else {
       return res.status(400).json({
