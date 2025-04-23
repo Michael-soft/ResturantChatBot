@@ -37,8 +37,9 @@ const ChatBot = () => {
 
     if (reference) {
       axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`)
-        .then(() => {
-          addMessage('bot', 'Payment successful! Redirecting to homepage...');
+        .then((response) => {
+          const { message, orderId, reference, amount } = response.data;
+          addMessage('bot', `${message} Order ID: ${orderId}, Amount: ₦${amount}, Reference: ${reference}. Redirecting to homepage...`);
           setTimeout(() => navigate('/'), 3000); // Redirect after 3 seconds
         })
         .catch(() => {
