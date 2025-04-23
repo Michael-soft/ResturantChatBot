@@ -29,7 +29,7 @@ function ChatBot() {
     const orderId = params.get('orderId');
     const reference = params.get('reference');
 
-    if (paymentStatus && orderId) {
+    if (paymentStatus==='success' && reference && orderId) {
       let message = '';
       
       switch (paymentStatus) {

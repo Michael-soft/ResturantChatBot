@@ -1,84 +1,45 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const query = new URLSearchParams(location.search);
-  const orderId = query.get('orderId');
-  const amount = query.get('amount');
   const reference = query.get('reference');
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    console.log('Payment success', { orderId, amount, reference });
+    const verifyPayment = async () => {
+      try {
+        const res = await fetch(`https://chatbotbackend-d5sx.onrender.com/api/payment/verify?reference=${reference}`);
+        const data = await res.json();
 
-    const timer = setTimeout(() => {
-      navigate('/'); // Redirect to chatbot homepage
-    }, 5000);
+        if (res.ok) {
+          //  Notify the user (you can use toast instead)
+          alert('Payment Successful!');
 
-    return () => clearTimeout(timer);
-  }, [orderId, amount, reference, navigate]);
+          //  Redirect back to ChatBot
+          navigate('/', { state: { paymentSuccess: true } });
+        } else {
+          console.error('Verification failed:', data);
+          alert('Payment verification failed.');
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        alert('Something went wrong. Try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return (
-    <div style={{ padding: 20, textAlign: 'center' }}>
-      <h1>Payment Successful!</h1>
-      <p>Order ID: <strong>{orderId}</strong></p>
-      <p>Amount Paid: <strong>₦{amount}</strong></p>
-      <p>Reference: <strong>{reference}</strong></p>
-      <p style={{ marginTop: 20, color: 'gray' }}>Redirecting you back to chat...</p>
-    </div>
-  );
+    if (reference) {
+      verifyPayment();
+    }
+  }, [reference, navigate]);
+
+  return loading ? <p>Verifying payment...</p> : null;
 };
 
 export default PaymentSuccess;
 
-
-// import { useEffect } from "react";
-
-// const PaymentSuccess = () => {
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       window.location.href = "/";
-//     }, 3000); // Redirect after 3 seconds
-
-//     return () => clearTimeout(timer); // Clean up if component unmounts
-//   }, []);
-
-//   return (
-//     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-//       <div className="text-center">
-//         <h1 className="text-2xl font-bold text-green-600">🎉 Payment Successful!</h1>
-//         <p className="mt-4 text-gray-700">Redirecting you back to the chatbot...</p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default PaymentSuccess;
-
-
-// import { useEffect } from 'react';
-// import { useLocation } from 'react-router-dom';
-
-// const PaymentSuccess = () => {
-//   const location = useLocation();
-//   const query = new URLSearchParams(location.search);
-//   const orderId = query.get('orderId');
-//   const amount = query.get('amount');
-//   const reference = query.get('reference');
-
-//   useEffect(() => {
-//     console.log('Payment success', { orderId, amount, reference });
-//   }, [orderId, amount, reference]);
-//   return (
-//     <div style={{ padding: 20, textAlign: 'center' }}>
-//       <h1> Payment Successful!</h1>
-//       <p>Order ID: <strong>{orderId}</strong></p>
-//       <p>Amount Paid: <strong>₦{amount}</strong></p>
-//       <p>Reference: <strong>{reference}</strong></p>
-//     </div>
-//   );
-// };
-
-// export default PaymentSuccess;
