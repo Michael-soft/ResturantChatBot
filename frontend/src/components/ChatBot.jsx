@@ -40,16 +40,16 @@ const ChatBot = () => {
         try {
           const res = await axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`);
           if (res.data?.success) {
-            addMessage('bot', '✅ Payment verified successfully! Redirecting to homepage...');
+            addMessage('bot', ' Payment verified successfully! Redirecting to homepage...');
             setTimeout(() => {
               navigate('/'); // Update this if your home route is different
             }, 3000);
           } else {
-            addMessage('bot', '⚠️ Payment verification failed. Please contact support.');
+            addMessage('bot', 'Payment verification failed. Please contact support.');
           }
         } catch (error) {
           console.error(error);
-          addMessage('bot', '❌ Error verifying payment. Please try again later.');
+          addMessage('bot', ' Error verifying payment. Please try again later.');
         } finally {
           const cleanURL = new URL(window.location);
           cleanURL.searchParams.delete('reference');
@@ -67,7 +67,9 @@ const ChatBot = () => {
 
   const handleSend = async () => {
     const message = userInput.trim();
-    if (!message) return;
+    if (!message) {
+      return;
+    }
 
     addMessage('user', message);
     setUserInput('');
