@@ -33,33 +33,50 @@ const ChatBot = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const reference = params.get('reference');
-
-    if (reference) {
-      const verifyPayment = async () => {
-        try {
-          const res = await axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`);
-          if (res.data?.success) {
-            addMessage('bot', ' Payment verified successfully! Redirecting to homepage...');
-            setTimeout(() => {
-              navigate('/'); // Update this if your home route is different
-            }, 3000);
-          } else {
-            addMessage('bot', 'Payment verification failed. Please contact support.');
-          }
-        } catch (error) {
-          console.error(error);
-          addMessage('bot', ' Error verifying payment. Please try again later.');
-        } finally {
-          const cleanURL = new URL(window.location);
-          cleanURL.searchParams.delete('reference');
-          window.history.replaceState({}, document.title, cleanURL.pathname);
-        }
-      };
-
-      verifyPayment();
+    const paymentStatus = params.get('payment');
+  
+    if (paymentStatus === 'success') {
+      addMessage('bot', ' Payment was successful! Your order is confirmed.');
+    } else if (paymentStatus === 'failed') {
+      addMessage('bot', ' Payment failed. Please try again.');
+    } else if (paymentStatus === 'error') {
+      addMessage('bot', ' An error occurred during payment verification.');
     }
-  }, [BACKEND_URL, navigate]);
+  
+    // Clean the URL to remove the query string
+    const cleanURL = new URL(window.location.href);
+    cleanURL.searchParams.delete('payment');
+    window.history.replaceState({}, '', cleanURL.pathname);
+  }, []);
+  
+  // useEffect(() => {
+  //   const params = new URLSearchParams(window.location.search);
+  //   const paymentStatus = params.get('payment');
+
+  //   if (paymentStatus === 'success') {
+  //     // const verifyPayment = async () => {
+  //     //   try {
+  //     //     const res = await axios.get(`${BACKEND_URL}/payment/verify?reference=${reference}`);
+  //     //     if (res.data?.success) {
+  //           addMessage('bot', ' Payment verified successfully! Redirecting to homepage...');
+  //           // setTimeout(() => {
+  //           //   navigate('/'); // Update this if your home route is different
+  //           // }, 3000);
+  //         } else if (paymentStatus === 'failed'){
+  //           addMessage('bot', 'Payment verification failed. Please contact support.');
+  //         } else if (paymentStatus === 'error') {
+  //           addMessage('bot', ' Error verifying payment. Please try again later.');
+  //         } 
+  //         //clean the URL to remove the query string 
+  //         const cleanURL = new URL(window.location.href);
+  //         cleanURL.searchParams.delete('payment');
+  //         window.history.replaceState({}, '', cleanURL.pathname);
+  //       }
+  //     }, []);
+
+  //     verifyPayment();
+  //   }
+  // }, [BACKEND_URL, navigate]);
 
   const addMessage = (sender, text) => {
     setMessages(prev => [...prev, { sender, text }]);
