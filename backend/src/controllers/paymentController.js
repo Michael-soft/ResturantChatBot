@@ -113,22 +113,14 @@ const verifyPayment = async (req, res) => {
         }
       });
       // send back to frontend 
-      return res.json({
-        success: true,
-        message: 'Payment verified successfully'
-      });
+      return res.redirect(`https://resturantchat-aeos.onrender.com/?payment=success`);
     } else {
-      return res.status(400).json({
-        error: 'Payment not successful',
-        details: response.data.message
-      });
+      return res.redirect(`https://resturantchat-aeos.onrender.com/?payment=failed`);
+      
     }
   } catch (error) {
     console.error('Payment verification error:', error);
-    return res.status(500).json({
-      error: 'Failed to verify payment',
-      details: error.response?.data?.message || error.message
-    });
+    return res.redirect(`https://resturantchat-aeos.onrender.com/?payment=error`);
   }
 };
 module.exports = {
